@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
@@ -7,7 +8,15 @@ module.exports = mysql.createPool({
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'parkease_db',
+
   waitForConnections: true,
   connectionLimit: 10,
-  decimalNumbers: true, // DECIMAL columns come back as numbers, not strings
+  decimalNumbers: true,
+
+  ssl: process.env.DB_SSL_CA
+    ? {
+        ca: process.env.DB_SSL_CA,
+        rejectUnauthorized: true
+      }
+    : undefined
 });
